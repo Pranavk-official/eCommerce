@@ -1,0 +1,1 @@
+// isAdmin, isAuthenticated, isVerified, isBlocked

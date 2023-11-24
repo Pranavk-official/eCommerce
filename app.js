@@ -7,16 +7,22 @@ const logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
 const session = require('express-session');
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+
+const { isActiveRoute } = require('./src/helpers/routeHelper')
+
+const indexRouter = require('./src/routes/index');
+const adminRouter = require('./src/routes/adminRoute');
+const usersRouter = require('./src/routes/users');
 // const adminRouter = require('./routes/admin');
 
 const app = express();
 
+app.use(expressLayouts);
 // view engine setup
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(expressLayouts);
+app.set('layout', './layouts/userLayout')
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -24,7 +30,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.locals.isActiveRoute = isActiveRoute
+
 app.use('/', indexRouter);
+app.use('/admin', adminRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

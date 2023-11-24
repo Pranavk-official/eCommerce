@@ -1,0 +1,112 @@
+<div class="container d-flex flex-wrap g-4 pb-4 justify-content-center">
+    <div class="col m-2">
+        <h1 class="text-center">Login</h1>
+        <% if(typeof message !='undefined' ) { %>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= message %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <% } %>
+        <div class="container py-5 card" style="max-width: 500px;">
+            <div class="form-signin w-100 m-auto card-body">
+                <form action="/login" method="POST">
+                    <img class="mb-4" src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg"
+                        alt="" width="72" height="57">
+                    <h1 class="h3 mb-3 fw-normal">Please Login</h1>
+
+                    <div class="form-floating pb-2">
+                        <input name="username" type="text" class="form-control" id="floatingInput"
+                            placeholder="Username">
+                        <label for="floatingInput">Username</label>
+                    </div>
+                    <div class="form-floating pb-2">
+                        <input name="password" type="password" class="form-control" id="floatingPassword"
+                            placeholder="Password">
+                        <label for="floatingPassword">Password</label>
+                    </div>
+
+                    <button class="btn btn-primary w-100 py-2" type="submit">Log in</button>
+                    <hr class="py-2">
+                </form>
+                <div class="text-center">
+                    <div class="card">
+                        <div class="card-body">
+                            <a class="btn btn-outline-success" href="/auth/google">
+                                <i class="bi bi-google py-2 my-2"></i>
+                                Sign Up with Google
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col m-2">
+        <div class="container ">
+            <h1 class="text-center">Register</h1>
+            <% if(typeof alert !='undefined' ) { %>
+                <% alert.forEach(function(error) { %>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <%= error.msg %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% }) %>
+            <% } %>
+            <% if(typeof message !='undefined' ) { %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <%= message %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% } %>
+            <div class="container py-5 card" style="max-width: 500px;">
+                <div class="form-signup w-100 m-auto card-body">
+                    <form action="/register" method="POST">
+                        <img class="mb-4"
+                            src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg"
+                            alt="" width="72" height="57">
+                        <h1 class="h3 mb-3 fw-normal">Register for free!!</h1>
+
+                        <div class="form-floating pb-1">
+                            <input name="username" type="username" class="form-control"
+                                id="floatingInput" placeholder="John Doe">
+                            <label for="floatingInput">Username</label>
+                        </div>
+                        <div class="form-floating pb-1">
+                            <input name="email" type="email" class="form-control"
+                                id="floatingInput" placeholder="">
+                            <label for="floatingInput">Email address</label>
+                        </div>
+                        <div class="form-floating pb-1">
+                            <input name="phone" type="phone" class="form-control"
+                                id="floatingInput" placeholder="name@example.com">
+                            <label for="floatingInput">Phone</label>
+                        </div>
+                        <div class="form-floating pb-1">
+                            <input name="password" type="password" class="form-control"
+                                id="floatingPassword" placeholder="Password">
+                            <label for="floatingPassword">Password</label>
+                        </div>
+
+                        <button class="btn btn-primary w-100 my-2 py-2"
+                            type="submit">Register</button>
+
+                        <hr class="py-2">
+
+
+                    </form>
+                    <div class="text-center">
+                        <div class="card">
+                            <div class="card-body">
+                                <a class="btn btn-outline-success" href="/auth/google">
+                                    <i class="bi bi-google py-2 my-2"></i>
+                                    Sign Up with Google
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
