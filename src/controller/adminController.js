@@ -38,6 +38,15 @@ module.exports = {
         }
     },
 
+    home : ( req,res ) => {
+
+        try {
+            res.redirect('/admin/dashboard')
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
 
 
 

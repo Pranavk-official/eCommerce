@@ -19,6 +19,9 @@
                 <div class="col-6 col-md-4 order-3 order-md-3 text-right">
                     <div class="site-top-icons">
                         <ul>
+                            <% if (typeof isAuthenticated !== 'undefined') { %>
+                                <% } %>
+                            <li><a href="/logout">l<span class="bi bi-boc-arrow-right"></span></a></li>
                             <li><a href="#"><span class="icon icon-person"></span></a></li>
                             <li><a href="#"><span class="icon icon-heart-o"></span></a></li>
                             <li>

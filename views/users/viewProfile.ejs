@@ -19,11 +19,11 @@
                     Details
 
                     <ul>
-                        <li>afds</li>
-                        <li>afds</li>
-                        <li>afds</li>
-                        <li>afds</li>
-                        <li>afds</li>
+                        <li><span class="h4 fw-bold">Name :</span> <%= userData.firstName + ' ' + userData.lastName %> </li>
+                        <li><span class="h4 fw-bold">Email :</span> <%= userData.email %> </li>
+                        <li><span class="h4 fw-bold">Phone :</span> <%= userData.phone %> </li>
+                        <li><span class="h4 fw-bold">Registration Date :</span> <%= userData.createdAt.toUTCString() %> </li>
+                        <li><span class="h4 fw-bold"></span></li>
                     </ul>
                 </div>
             </div>
@@ -41,7 +41,9 @@
                     History
                 </div>
                 <div class="col">
-                    Edit Bio
+                    <a href="/user/profile/edit">
+                        Edit Bio
+                    </a>
                 </div>
                 <div class="col">
                     Change Password

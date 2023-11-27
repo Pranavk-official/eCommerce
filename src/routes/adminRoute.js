@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const {isAuthenticated, isAdmin} = require('../middlewares/authMiddleware')
+
 const userController = require('../controller/userController')
 const adminController = require('../controller/adminController')
 const productController = require('../controller/productController')
@@ -10,7 +12,7 @@ const authController = require('../controller/authController')
 
 // Routes - GET /
 
-router.get('/', adminController.dashboard)
+router.get('/', isAuthenticated, adminController.home)
 
 router.get('/login', )
 router.get('/signup', )

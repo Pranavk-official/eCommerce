@@ -4,14 +4,14 @@ const router = express.Router();
 const userController = require('../controller/userController')
 const authController = require('../controller/authController')
 
+const { isAuthenticated } = require('../middlewares/authMiddleware')
+
 // User Routes - GET /
 router.get('/')
 
-router.get('/login')
-router.get('/signup')
-router.get('/verify-otp')
 
-router.get('/profile')
+router.get('/profile', isAuthenticated,userController.getUserProfile)
+router.get('/profile/edit', isAuthenticated,userController.getEditUserProfile)
 router.get('/address')
 
 router.get('/products')
@@ -24,9 +24,7 @@ router.get('/cart')
 
 
 // User Routes - POST /
-router.post('/login')
-router.post('/signup')
-router.post('/verify-otp')
+
 router.post('/profile/edit/')
 
 router.post('/address/add/')
