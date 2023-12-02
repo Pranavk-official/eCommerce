@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="container card pt-5" style="max-width: 600px;">
+        <form action="/admin/products/add-product" method="POST" class="card-body"  enctype="multipart/form-data">
+                <legend>Add Product</legend>
+
+
+                <div class="mb-3">
+                    <label class="form-label" for="image">Product Image</label>
+                    <input class="form-control" type="file" name="images" id="image" multiple>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="name">Product Name</label>
+                    <input class="form-control" type="text" name="name" id="name">
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-3">
+                        <label class="form-label" for="brand">Brand</label>
+                        <input class="form-control" type="text" name="brand" id="brand">
+                    </div>
+                    <div class="mb-3 col-3">
+                        <label class="form-label" for="price">Price</label>
+                        <input class="form-control" type="number" name="price" id="price">
+                    </div>
+                    <div class="mb-3 col-3">
+                        <label class="form-label" for="quantity">Quantity</label>
+                        <input class="form-control" type="number" name="quantity" id="quantity">
+                    </div>
+                    <div class="mb-3 col-3">
+                        <label class="form-label" for="category">Category</label>
+                        <select class="form-select" aria-label="Default select example" name="id" id="category">
+                            <% for( let category of categories ) { %>
+                                <option value="<%= category._id %>"><%= category.name%> </option>
+                            <% } %>
+                          </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="description">Product Description</label>
+                    <textarea name="description" id="description" cols="62" rows="10"></textarea>
+                </div>
+
+                <button class="btn btn-primary" type="submit">Add Product</button>
+        </form>
+    </div>
+</div>

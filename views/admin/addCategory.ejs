@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="card container">
+        <form action="/admin/category/add-category" method="POST" class="card-body" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Add Category</legend>
+
+                <div class="mb-3">
+                    <label for="images">Category Image</label>
+                    <input type="file" name="image" id="images">
+                </div>
+                <div class="mb-3">
+                    <label for="name">Category Name</label>
+                    <input type="text" name="name" id="name">
+                </div>
+
+                <button class="btn btn-primary" type="submit">Add</button>
+            </fieldset>
+        </form>
+    </div>
+</div>

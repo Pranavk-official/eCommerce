@@ -1,7 +1,11 @@
 const express = require('express');
+const multer = require('multer');
 const router = express.Router();
 
-const {isAuthenticated, isAdmin} = require('../middlewares/authMiddleware')
+const {isAuthenticated, isAdminLoggedIn} = require('../middlewares/authMiddleware')
+const {upload, categoryUpload, productUpload} = require('../middlewares/multer')
+// const catUpload = multer({dest: './public/uploads/category-images'})
+// const productUpload = multer({dest: './public/uploads/product-images'})
 
 const userController = require('../controller/userController')
 const adminController = require('../controller/adminController')
@@ -12,50 +16,51 @@ const authController = require('../controller/authController')
 
 // Routes - GET /
 
-router.get('/', isAuthenticated, adminController.home)
+router.get('/', isAdminLoggedIn, adminController.home)
+router.get('/dashboard', isAdminLoggedIn, adminController.dashboard)
 
-router.get('/login', )
-router.get('/signup', )
+router.get('/users', isAdminLoggedIn, adminController.usersList)
+router.get('/users/add-user', )
+router.get('/users/view/user:id', )
+router.get('/users/edit/user:id', )
 
-router.get('/admin/users', )
-router.get('/admin/users/add-user', )
-router.get('/admin/users/view/user:id', )
-router.get('/admin/users/edit/user:id', )
+router.get('/products', isAdminLoggedIn, productController.getProductList)
+router.get('/products/add-product',  isAdminLoggedIn, productController.getAddProduct)
+router.get('/products/view-product/:id',  isAdminLoggedIn, productController.viewProduct)
+router.get('/products/edit-product/:id',  isAdminLoggedIn, productController.getEditProduct)
 
-router.get('/admin/products', )
-router.get('/admin/users/add-product', )
-router.get('/admin/products/view/product:id', )
-router.get('/admin/products/edit/product:id', )
+router.get('/category', isAdminLoggedIn, categoryController.getCategoryList)
+router.get('/category/add-category', isAdminLoggedIn, categoryController.getAddCategory)
+router.get('/category/view-category/:id', )
+router.get('/category/edit-category/:id', )
 
-router.get('/admin/category', )
-router.get('/admin/users/add-category', )
-router.get('/admin/categories/view/category:id', )
-router.get('/admin/categories/edit/category:id', )
-
-router.get('/admin/banners', )
-router.get('/admin/users/add-banner', )
-router.get('/admin/banners/view/banner:id', )
-router.get('/admin/banners/edit/banner:id', )
+router.get('/banners', )
+router.get('/users/add-banner', )
+router.get('/banners/view/banner:id', )
+router.get('/banners/edit/banner:id', )
 
 
 
 // Routes - POST /
 
-router.post('/admin/users/add-user', )
-router.post('/admin/users/add-product', )
-router.post('/admin/users/add-category', )
-router.post('/admin/users/add-banner', )
+
+router.post('/users/add-user', )
+router.post('/products/add-product', isAdminLoggedIn, productUpload.array('images', 4), productController.addProduct)
+router.post('/category/add-category', isAdminLoggedIn, categoryUpload.single('image'), categoryController.addCategory)
+router.post('/banners/add-banner', )
 
 
 // Routes - Delete /
 
-router.delete('/admin/users/view/user:id', )
-router.delete('/admin/products/view/user:id', )
-router.delete('/admin/categories/view/user:id', )
-router.delete('/admin/banners/view/user:id', )
+router.delete('/users/delete-user/:id', adminController.deleteUser )
+router.delete('/products/view/user:id', )
+router.delete('/category/delete-category/:id', isAdminLoggedIn, categoryController.deleteCategory )
+router.delete('/banners/view/user:id', )
 
 
 // Routes - Put / Patch
+router.patch('/users/block-user/:id', adminController.blockUser )
+router.patch('/users/unblock-user/:id', adminController.unblockUser )
 
 
 module.exports = router

@@ -6,10 +6,13 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
 const session = require('express-session');
+const flash = require('connect-flash');
 const MongoStore = require('connect-mongo');
 const nocache = require('nocache');
-const connetDB = require('./src/config/db')
+const methodOverride = require('method-override');
+const multer = require( 'multer' )
 
+const connetDB = require('./src/config/db')
 const passport = require('./src/config/passport-config')
 
 const { isActiveRoute } = require('./src/helpers/routeHelper')
@@ -23,6 +26,9 @@ const usersRouter = require('./src/routes/userRoute');
 const app = express();
 
 
+
+
+
 app.use(expressLayouts);
 // view engine setup
 
@@ -30,11 +36,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.set('layout', './layouts/userLayout')
 
-app.use(logger('dev'));
+app.use(logger('tiny'));
 app.use(express.json());
+app.use(methodOverride('_method'))
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.use(session({
   secret: process.env.SECRET,
@@ -42,9 +50,10 @@ app.use(session({
   saveUninitialized: false,
   store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
   cookie: {
-      maxAge: 1000* 60 * 60 * 24
+    maxAge: 1000* 60 * 60 * 24
   }
 }))
+
 
 app.use(nocache());
 
@@ -53,10 +62,9 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 
-
-
 app.locals.isActiveRoute = isActiveRoute
 
+app.use(flash());
 
 connetDB();
 

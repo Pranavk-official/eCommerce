@@ -1,9 +1,23 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const Category = require('../models/categorySchema')
+const Product = require('../models/productSchema')
+
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', async function(req, res, next) {
+  
+  const categories = await Category.find({status: true})
+  const products = await Product.find({status: true})
+
+  console.log(categories);
+
+  res.render('index', { 
+    title: 'Shopper',
+    user: req.user,
+    categories,
+    products
+   });
 });
 
 router.get('/profile', function(req, res, next) {

@@ -16,7 +16,8 @@ module.exports = {
         try {
             
             res.render('users/viewProfile',{
-              userData: req.user  
+              userData: req.user,
+              user: req.user
             })
         } catch (error) {
             
@@ -31,17 +32,37 @@ module.exports = {
 
         const userData = await User.findById(req.user._id)
 
-        console.log(userData.lastName);
+        // console.log(req);
 
         try {
             
             res.render('users/editProfile',{
               userData ,
-              isAuthenticated: req.isAuthenticated()
+              user: req.user
             })
         } catch (error) {
             
         }
 
+    },
+
+    editUserProfile : async (req,res) => {
+        try {   
+            console.log(req.body,req.file, req.user.id);
+
+            // await User.updateOne({_id: req.params.id}, {
+            //     $set: {
+            //         avatar: req.file.path,
+            //         firstName: req.body.firstName,
+            //         lastName: req.body.lastName,
+            //     }
+            // })
+
+            await User.updateOne({_id: req.user.id},{$set: {avatar : req.file.filename }})
+
+            res.redirect('/user/profile')
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

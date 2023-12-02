@@ -55,39 +55,19 @@
 <div class="site-section site-blocks-2">
   <div class="container">
     <div class="row">
-      <div class="col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0" data-aos="fade" data-aos-delay="">
-        <a class="block-2-item" href="#">
-          <figure class="image">
-            <img src="images/women.jpg" alt="" class="img-fluid">
-          </figure>
-          <div class="text">
-            <span class="text-uppercase">Collections</span>
-            <h3>Women</h3>
-          </div>
-        </a>
-      </div>
-      <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="100">
-        <a class="block-2-item" href="#">
-          <figure class="image">
-            <img src="images/children.jpg" alt="" class="img-fluid">
-          </figure>
-          <div class="text">
-            <span class="text-uppercase">Collections</span>
-            <h3>Children</h3>
-          </div>
-        </a>
-      </div>
-      <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
-        <a class="block-2-item" href="#">
-          <figure class="image">
-            <img src="images/men.jpg" alt="" class="img-fluid">
-          </figure>
-          <div class="text">
-            <span class="text-uppercase">Collections</span>
-            <h3>Men</h3>
-          </div>
-        </a>
-      </div>
+      <% categories.forEach(category => { %>
+        <div class="col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0" data-aos="fade" data-aos-delay="">
+          <a class="block-2-item" href="#">
+            <figure class="image">
+              <img src="/uploads/category-images/<%= category.image %>" alt="" class="img-fluid">
+            </figure>
+            <div class="text">
+              <span class="text-uppercase">Collections</span>
+              <h3><%= category.name %></h3>
+            </div>
+          </a>
+        </div>
+      <% }) %>
     </div>
   </div>
 </div>
@@ -102,18 +82,20 @@
     <div class="row">
       <div class="col-md-12">
         <div class="nonloop-block-3 owl-carousel">
+          <% products.forEach(product => { %>
           <div class="item">
             <div class="block-4 text-center">
               <figure class="block-4-image">
-                <img src="images/cloth_1.jpg" alt="Image placeholder" class="img-fluid">
+                <img src="/uploads/product-images/<%= product.image[0] %> " alt="Image placeholder" class="img-fluid">
               </figure>
               <div class="block-4-text p-4">
-                <h3><a href="#">Tank Top</a></h3>
+                <h3><a href="/"><%= product.name %> </a></h3>
                 <p class="mb-0">Finding perfect t-shirt</p>
-                <p class="text-primary font-weight-bold">$50</p>
+                <p class="text-primary font-weight-bold">$<%= product.price %> </p>
               </div>
             </div>
           </div>
+          <% }) %>
           <div class="item">
             <div class="block-4 text-center">
               <figure class="block-4-image">

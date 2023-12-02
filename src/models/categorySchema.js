@@ -1,0 +1,27 @@
+const mongoose = require( 'mongoose' )
+
+const Schema = mongoose.Schema
+
+const categorySchema = Schema({
+    name : {
+        type : String,
+        required : true
+    },
+
+    image: {
+        type: String
+    },
+
+    status : {
+        type : Boolean,
+        required : true,
+        default : true
+    },
+
+    // offer : {
+    //     type : mongoose.Schema.Types.ObjectId,
+    //     ref : 'offer'
+    // }
+})
+
+module.exports = mongoose.model('Category', categorySchema)

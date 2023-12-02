@@ -17,22 +17,36 @@
                 </div>
 
                 <div class="col-6 col-md-4 order-3 order-md-3 text-right">
-                    <div class="site-top-icons">
-                        <ul>
-                            <% if (typeof isAuthenticated !== 'undefined') { %>
-                                <% } %>
-                            <li><a href="/logout">l<span class="bi bi-boc-arrow-right"></span></a></li>
-                            <li><a href="#"><span class="icon icon-person"></span></a></li>
-                            <li><a href="#"><span class="icon icon-heart-o"></span></a></li>
-                            <li>
-                                <a href="cart.html" class="site-cart">
-                                    <span class="icon icon-shopping_cart"></span>
-                                    <span class="count">2</span>
+                    <div class="dropdown-center">
+                        <% if (typeof user !== 'undefined') { %>
+                            <% if (user) { %>
+                                <a class="btn btn-primary dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  
+                                  <%= user.firstName %> 
                                 </a>
-                            </li>
-                            <li class="d-inline-block d-md-none ml-md-0"><a href="#"
-                                    class="site-menu-toggle js-menu-toggle"><span class="icon-menu"></span></a></li>
-                        </ul>
+                              
+                                <ul class="dropdown-menu">
+                                  <li><a class="dropdown-item" href="/user/profile">My Account</a></li>
+                                  <li><a class="dropdown-item" href="/user/cart">Cart</a></li>
+                                  <li><a class="dropdown-item" href="/user/orders">Orders</a></li>
+                                  <li><hr class="dropdown-divider"></li>
+                                  <li>
+                                    <form class="dropdown-item" action="/logout" method="POST">
+                                        <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+                                    </form>
+                                  </li>
+                                </ul>
+                            <% } %>
+                        <% } else { %>
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Guest
+                            </a>
+                            
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/login">Login</a></li>
+                                <li><a class="dropdown-item" href="/register">Register</a></li>
+                            </ul>      
+                        <% } %>
                     </div>
                 </div>
 

@@ -1,7 +1,14 @@
 <div class="container my-5">
   <div class="container card my-5">
-    <form class="card-body" action="/user/profile/edit/<%- userData._id %> ?_method=PUT" method="POST">
+    <form class="card-body" action="/user/edit-profile/<%- userData._id %> ?_method=PATCH" method="POST" enctype="multipart/form-data">
     
+        <div class="mb-4">
+            <label for="image">Profile Image</label>
+            <img src="/uploads/profile-images/<%- userData.avatar %>" alt="" height="50px" width="60px" class="img-fluid">
+            <%= userData.avatar %> 
+            <input type="file" class="form-control" name="image" id="image">
+        </div>
+
       <div class="row form-group mb-4">
           <div class="col">
               <label for="firstName">First Name</label>
@@ -22,48 +29,11 @@
               <input type="text" class="form-control" name="email" id="email" value="<%= userData.email%>" placeholder="Email" required disabled>
           </div>
       </div>
-      <!-- <div class="form-group mb-4">
-          <label for="email">User Details</label>
-          <textarea class="form-control" name="details" id="details" cols="30" rows="12" placeholder="Customer Details">
-              
-          </textarea>
-      </div> -->
+
       <div class="form-group mb-4">
           <button type="submit" class="btn btn-primary">Update User</button>  
       </div>
     
     </form>
-  </div>
-</div>
-
-
-
-<!-- Modal -->
-
-<div class="modal fade" tabindex="-1" role="dialog" id="deleteModal">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <div class="modal-title">You are about to remove a customer record.</div>
-              <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="close"></button>
-          </div>
-
-          <div class="modal-body">
-              <p>
-                  This will remove the customer record of <b class="fw-bold"><%= userData.firstName +" "+ userData.lastName %> </b> <br>
-                  Are you sure?
-              </p>
-          </div>
-
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-              <form action="/edit/<%= userData._id %>?_method=DELETE" method="POST" class="position-relative">
-                  <button class="btn btn-primary">Yes, Remove Cusromer</button>
-              </form>
-
-          </div>
-
-      </div>
   </div>
 </div>

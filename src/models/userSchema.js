@@ -42,6 +42,14 @@ const userSchema = Schema({
         type : Date,
         default: Date.now
     },
+    token : {
+        otp: {
+            type: Number
+        },
+        generatedTime : {
+            type: Date
+        }
+    }
 }, {
     timestamps: true
 })
