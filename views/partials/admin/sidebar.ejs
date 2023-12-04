@@ -1,8 +1,8 @@
-<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+<nav id="sidebarMenu" class="col-sm-3 col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
     <div class="position-sticky pt-3">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/admin/dashboard">
+                <a class="nav-link" aria-current="page" href="/admin/dashboard">
                     <span data-feather="home"></span>
                     Dashboard
                 </a>
@@ -13,22 +13,27 @@
                     Orders
                 </a>
             </li>
+
             <li class="nav-item dropdown">
-                <button class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Category
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/admin/category/">All Category</a></li>
-                    <li><a class="dropdown-item" href="/admin/category/add-category">Add Category</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/admin/products/">
-                    <span data-feather="shopping-cart"></span>
-                    Products
                 </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/admin/category">All Categories</a></li>
+                  <li><a class="dropdown-item" href="/admin/category/add-category">Add Category</a></li>
+                </ul>
             </li>
+            
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Product
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/admin/products">All Products</a></li>
+                  <li><a class="dropdown-item" href="/admin/products/add-product">Add Product</a></li>
+                </ul>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="/admin/users/">
                     <span data-feather="users"></span>
@@ -83,3 +88,5 @@
         </ul>
     </div>
 </nav>
+
+

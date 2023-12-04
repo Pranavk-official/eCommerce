@@ -10,8 +10,6 @@ router.get('/', async function(req, res, next) {
   const categories = await Category.find({status: true})
   const products = await Product.find({status: true})
 
-  console.log(categories);
-
   res.render('index', { 
     title: 'Shopper',
     user: req.user,

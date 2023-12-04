@@ -21,7 +21,7 @@ const indexRouter = require('./src/routes/index');
 const authRouter = require('./src/routes/authRoute');
 const adminRouter = require('./src/routes/adminRoute');
 const usersRouter = require('./src/routes/userRoute');
-// const adminRouter = require('./routes/admin');
+const shopRouter = require('./src/routes/shopRoute');
 
 const app = express();
 
@@ -69,9 +69,9 @@ app.use(flash());
 connetDB();
 
 
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
 app.use('/', authRouter);
-// app.use('/', shopRouter);
+app.use('/', shopRouter);
 app.use('/user', usersRouter);
 app.use('/admin', adminRouter);
 

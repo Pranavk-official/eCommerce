@@ -4,14 +4,12 @@ const router = express.Router();
 
 const {isAuthenticated, isAdminLoggedIn} = require('../middlewares/authMiddleware')
 const {upload, categoryUpload, productUpload} = require('../middlewares/multer')
-// const catUpload = multer({dest: './public/uploads/category-images'})
-// const productUpload = multer({dest: './public/uploads/product-images'})
+
 
 const userController = require('../controller/userController')
 const adminController = require('../controller/adminController')
 const productController = require('../controller/productController')
 const categoryController = require('../controller/categoryController')
-const authController = require('../controller/authController')
 
 
 // Routes - GET /
@@ -43,24 +41,31 @@ router.get('/banners/edit/banner:id', )
 
 // Routes - POST /
 
-
 router.post('/users/add-user', )
 router.post('/products/add-product', isAdminLoggedIn, productUpload.array('images', 4), productController.addProduct)
+router.post('/products/edit-product/:id', isAdminLoggedIn, productUpload.array('images', 4), productController.editProduct)
 router.post('/category/add-category', isAdminLoggedIn, categoryUpload.single('image'), categoryController.addCategory)
+router.post('/category/edit-category', isAdminLoggedIn, categoryUpload.single('image'), categoryController.editCategory)
 router.post('/banners/add-banner', )
 
 
 // Routes - Delete /
 
-router.delete('/users/delete-user/:id', adminController.deleteUser )
+router.delete('/users/delete-user/:id', isAdminLoggedIn, adminController.deleteUser )
 router.delete('/products/view/user:id', )
 router.delete('/category/delete-category/:id', isAdminLoggedIn, categoryController.deleteCategory )
 router.delete('/banners/view/user:id', )
 
 
 // Routes - Put / Patch
-router.patch('/users/block-user/:id', adminController.blockUser )
-router.patch('/users/unblock-user/:id', adminController.unblockUser )
+router.patch('/users/block-user/:id', isAdminLoggedIn, adminController.blockUser )
+router.patch('/users/unblock-user/:id', isAdminLoggedIn, adminController.unblockUser )
+
+router.patch('/category/list-category/:id', isAdminLoggedIn, categoryController.listCategory )
+router.patch('/category/unlist-category/:id',  isAdminLoggedIn, categoryController.unlistCategory)
+
+router.patch('/products/list-product/:id', isAdminLoggedIn, productController.listProduct )
+router.patch('/products/unlist-product/:id',  isAdminLoggedIn, productController.unlistProduct)
 
 
 module.exports = router

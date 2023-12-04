@@ -217,6 +217,7 @@ module.exports = {
         const errors = []
 
         try {
+            console.log(req.body);
             const { firstName, lastName, username, email, phone, pwd, pwdConf } = req.body
 
 
@@ -241,9 +242,9 @@ module.exports = {
             const otp = await verificationController.sendVerifyEmail(username, email)
             console.log(otp);
             const user = new User({
+                username,
                 firstName,
                 lastName,
-                username,
                 email,
                 phone,
                 password: hashpwd,

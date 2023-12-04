@@ -1,55 +1,112 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">
+    <%= locals.title ? locals.title : 'Dashboard' %>
+  </h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <a href="/products/add-product">
+        <button type="button" class="btn btn-sm btn-outline-primary">Add Product</button>
+      </a>
+      <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+      <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+    </div>
+    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+      <span data-feather="calendar"></span>
+      This week
+    </button>
+  </div>
+</div>
+
+<div class="container">
+  <% if (typeof success !=='undefined' ) { %>
+    <% if (success) { %>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>
+          <%= success %>
+        </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <% } %>
+        <% } %>
+          <% if (typeof err !=='undefined' ) { %>
+            <% if (err) { %>
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>
+                  <%= err %>
+                </strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <% } %>
+                <% } %>
+</div>
+
+
 <div class="container">
 
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Image</th>
-          <th scope="col">Status</th>
-          <th scope="col" class="text-center" >List/Unlist</th>
-          <th scope="col" class="text-center" >Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-  
-        <% products.forEach((product,index) => { %>
-         <tr class="align-middle">
-            <td><%= index+1 %> </td>
-            <td><%= product.name %> </td>
-            <td> 
-              <img height="50px" width="50px" src="/uploads/product-images/<%= product.image[0] %>" alt="" class="img-fluid">
-            </td>
-            <td>
-              <% if (product.status) { %>
-               listed
-               <% } else { %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Image</th>
+        <th scope="col">Status</th>
+        <th scope="col" class="text-center">List/Unlist</th>
+        <th scope="col" class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <% products.forEach((product,index)=> { %>
+        <tr class="align-middle">
+          <td>
+            <%= index+1 %>
+          </td>
+          <td>
+            <%= product.name %>
+          </td>
+          <td>
+            <img height="50px" width="50px" src="/uploads/product-images/<%= product.image[0] %>" alt=""
+              class="img-fluid">
+          </td>
+          <td>
+            <% if (product.status) { %>
+              listed
+              <% } else { %>
                 unlisted
-              <% } %>
-            </td>
-            <td class="text-center">
-              <div class="d-flex flex-row justify-content-center">
-                <% if (product.status) { %>
-                  <button class="btn btn-danger btn-sm"><i class="bi bi-slash-circle-fill"></i> Unlist</button>
-                  <% } else { %>
-                   <button class="btn btn-success btn-sm"><i class="bi bi-check-circle-fill"></i> List</button>
-                 <% } %>
-              </div>
-            </td>
-            <td class="text-center">
-              <div class="d-flex flex-row justify-content-center">
-                <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
-                <button class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></button>
-                <form action="/admin/products/delete-product/<%= product._id%>?_method=DELETE" method="POST" class="position relative">
-                  <button class="btn btn-danger btn-sm mx-1">
-                      <i class="bi bi-trash"></i>
+                <% } %>
+          </td>
+          <td class="text-center">
+            <div class="d-flex flex-row justify-content-center">
+              <% if (product.status) { %>
+                <form action="/admin/products/unlist-product/<%= product._id%>?_method=PATCH" method="POST">
+                  <button class="btn btn-danger btn-sm">
+                    <i class="bi bi-slash-circle-fill"></i> Unlist
                   </button>
+                </form>
+                <% } else { %>
+                  <form action="/admin/products/list-product/<%= product._id%>?_method=PATCH" method="POST">
+                    <button class="btn btn-success btn-sm">
+                      <i class="bi bi-check-circle-fill"></i> List
+                    </button>
+                  </form>
+                  <% } %>
+            </div>
+          </td>
+          <td class="text-center">
+            <div class="d-flex flex-row justify-content-center">
+              <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
+              <button class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></button>
+              <form action="/admin/products/delete-product/<%= product._id%>?_method=DELETE" method="POST"
+                class="position relative">
+                <button class="btn btn-danger btn-sm mx-1">
+                  <i class="bi bi-trash"></i>
+                </button>
               </form>
-              </div>
-            </td>
-         </tr>
+            </div>
+          </td>
+        </tr>
         <% }) %>
-  
+
     </tbody>
-    </table>
-  </div>
+  </table>
+</div>

@@ -65,7 +65,7 @@ module.exports = {
         try {
             await Category.updateOne({_id: req.params.id},{$set: {status : true }})
             req.flash('success', 'Category removed/unlisted')
-            res.redirect('/admin/products')
+            res.redirect('/admin/category')
         } catch (error) {
             console.log(error);
         }
@@ -74,7 +74,7 @@ module.exports = {
         try {
             await Category.updateOne({_id: req.params.id},{$set: {status : false }})
             req.flash('success', 'Category removed/unlisted')
-            res.redirect('/admin/products')
+            res.redirect('/admin/category')
         } catch (error) {
             console.log(error);
         }

@@ -1,10 +1,45 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <%= locals.title ? locals.title : 'Dashboard' %>
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <a href="/users/add-user">
+                <button type="button" class="btn btn-sm btn-outline-primary">Add User</button>
+            </a>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <span data-feather="calendar"></span>
+            This week
+        </button>
+    </div>
+</div>
+
+<div class="container">
+    <% if (typeof success !== 'undefined' || typeof err !== 'undefined') { %>
+     <% if (success) { %>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong><%= success %> </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+     <% } %>
+     <% if (err) { %>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong><%= err %> </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+     <% } %>
+    <% } %>
+</div>
+  
+
 <div class="table-resposive">
     <table class="table table-striped table-sm">
         <thead>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Phone</th>
-            <th scope="col">Email</th>
+            <th scope="col">Username</th>
+            <th scope="col">Full Name</th>
             <th scope="col" class="text-center">isVerified</th>
             <th scope="col" class="text-center">isAdmin</th>
             <th scope="col" class="text-center">Block/Unblock</th>
@@ -14,10 +49,8 @@
 
             <% users.forEach(user => { %>
              <tr class="align-middle">
-                <td><%= user.firstName %> </td>
-                <td><%= user.lastName %> </td>
-                <td><%= user.phone %> </td>
-                <td><%= user.email %> </td>
+                <td><%= user.username %> </td>
+                <td><%= user.firstName + ' ' + user.lastName %> </td>
                 <td class="text-center">
                     <% if (user.isVerified) { %>
                         <span class="text-success"><%= user.isVerified %></span>
@@ -36,13 +69,13 @@
                     <% if (!user.isBlocked) { %>
                         <form action="/admin/users/block-user/<%= user._id%>?_method=PATCH" method="POST">
                             <button class="btn btn-danger btn-sm">
-                                <i class="bi bi-person"></i>
+                                <i class="bi bi-person"></i> Block
                             </button>
                         </form>
                         <% } else { %>
                             <form action="/admin/users/unblock-user/<%= user._id%>?_method=PATCH" method="POST">
                                 <button class="btn btn-success btn-sm">
-                                    <i class="bi bi-person"></i>
+                                    <i class="bi bi-person"></i> Unblock
                                 </button>
                             </form>
                     <% } %>

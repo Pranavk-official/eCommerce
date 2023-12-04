@@ -1,39 +1,47 @@
 <div class="container my-5">
-  <div class="container card my-5">
-    <form class="card-body" action="/user/edit-profile/<%- userData._id %> ?_method=PATCH" method="POST" enctype="multipart/form-data">
-    
-        <div class="mb-4">
-            <label for="image">Profile Image</label>
-            <img src="/uploads/profile-images/<%- userData.avatar %>" alt="" height="50px" width="60px" class="img-fluid">
-            <%= userData.avatar %> 
-            <input type="file" class="form-control" name="image" id="image">
-        </div>
+    <div class="container card my-5">
+        <form class="card-body" action="/user/edit-profile/<%- userData._id %> ?_method=PATCH" method="POST"
+            enctype="multipart/form-data">
 
-      <div class="row form-group mb-4">
-          <div class="col">
-              <label for="firstName">First Name</label>
-              <input type="text" class="form-control" name="firstName" id="firstName" value="<%= userData.firstName %>" placeholder="First Name" required>
-          </div>
-          <div class="col">
-              <label for="lastName">Last Name</label>
-              <input type="text" class="form-control" name="lastName" id="lastName" value="<%= userData.lastName%>" placeholder="Last Name" required>
-          </div>
-      </div>
-      <div class="row form-group mb-4">
-          <div class="col">
-              <label for="tel">Phone</label>
-              <input type="text" class="form-control" name="tel" id="tel" value="<%= userData.phone%>" placeholder="Telephone" required disabled>
-          </div>
-          <div class="col">
-              <label for="email">Email</label>
-              <input type="text" class="form-control" name="email" id="email" value="<%= userData.email%>" placeholder="Email" required disabled>
-          </div>
-      </div>
+            <div class="mb-4">
+                <label for="image">Profile Image</label>
+                <img src="/uploads/profile-images/<%- userData.avatar %>" alt="" height="50px" width="60px" class="img-fluid">
+                <input type="file" class="form-control" name="image" id="image">
+            </div>
+            <div class="mb-4">
+                <label for="firstName">Username</label>
+                <input type="text" class="form-control" name="firstName" id="firstName"
+                    value="<%= userData.username %>" placeholder="Username" required>
+            </div>
+            <div class="row form-group mb-4">
+                <div class="col">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" name="firstName" id="firstName"
+                        value="<%= userData.firstName %>" placeholder="First Name" required>
+                </div>
+                <div class="col">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" name="lastName" id="lastName"
+                        value="<%= userData.lastName%>" placeholder="Last Name" required>
+                </div>
+            </div>
+            <div class="row form-group mb-4">
+                <div class="col">
+                    <label for="tel">Phone</label>
+                    <input type="text" class="form-control" name="tel" id="tel" value="<%= userData.phone%>"
+                        placeholder="Telephone" required disabled>
+                </div>
+                <div class="col">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" name="email" id="email" value="<%= userData.email%>"
+                        placeholder="Email" required disabled>
+                </div>
+            </div>
 
-      <div class="form-group mb-4">
-          <button type="submit" class="btn btn-primary">Update User</button>  
-      </div>
-    
-    </form>
-  </div>
+            <div class="form-group mb-4">
+                <button type="submit" class="btn btn-primary">Update User</button>
+            </div>
+
+        </form>
+    </div>
 </div>

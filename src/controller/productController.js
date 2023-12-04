@@ -26,13 +26,14 @@ module.exports = {
             const nextPage = parseInt(page) + 1
             const hasNextPage = nextPage <= Math.ceil(count / perPage)
 
-            console.log(products[0].image[0]);
+            // console.log(products[0].image[0]);
 
             res.render('admin/products', {
                 locals,
                 products,
                 layout: adminLayout,
-                success: req.flash('success')
+                success: req.flash('success'),
+                err: req.flash('err')
             })
         } catch (error) {
             console.log(error);
@@ -103,8 +104,46 @@ module.exports = {
             console.log(error);
         }
     },
-    editProduct : (req,res) => {
-        
+    editProduct : async (req,res) => {
+        try {
+            const existingProduct = await productSchema.findById( req.body.productId )
+            if( req.files ) {
+                for( let file of req.files ) {
+                    if( 
+                        file.mimetype !== 'image/jpg' &&
+                        file.mimetype !== 'image/jpeg' &&
+                        file.mimetype !== 'image/png' &&
+                        file.mimetype !== 'image/gif'
+                        ){
+                            req.flash( 'err','Check the image type' )
+                            return res.redirect(`/admin/products/edit-product/${existingProduct._id}`)
+                        }
+                }
+                const images = existingProduct.image
+                req.files.forEach( element => {
+                    images.push( element.filename )
+                });
+                var img = images
+            }
+            await productSchema.updateOne( { _id : req.body.productId },
+                {
+                    $set : {
+                        name : req.body.name,
+                        description : req.body.description,
+                        brand : req.body.brand,
+                        category : req.body.id,
+                        quantity : req.body.quantity,
+                        price : req.body.price,
+                        image : img
+                    }
+                }
+            )
+            req.flash('success', 'Product Edited Successfully')
+            res.redirect( '/admin/products' )
+        } catch ( error ) {
+            res.redirect('/500')
+
+        }
     },
 
     deleteProduct : async (req,res) => {

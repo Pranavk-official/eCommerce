@@ -1,0 +1,67 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <%= locals.title ? locals.title : 'Dashboard' %>
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <a href="/products/add-product">
+                <button type="button" class="btn btn-sm btn-outline-primary">Add Product</button>
+            </a>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <span data-feather="calendar"></span>
+            This week
+        </button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="container card pt-5" style="max-width: 600px;">
+        <form action="/admin/products/edit-product/<%- product._id %>" method="POST" class="card-body"  enctype="multipart/form-data">
+                <legend>Edit Product</legend>
+
+
+                <div class="mb-3">
+                    <label class="form-label" for="image">Product Image</label>
+                    <% product.image.forEach((img,index) => { %>
+                        <img src="/uploads/product-images/<%- img[index+1] %>" alt="" class="img-fluid">
+                    <% }) %>
+                    <input class="form-control" type="file" name="images" id="image" multiple>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="name">Product Name</label>
+                    <input class="form-control" type="text" name="name" value="<%- product.name %> " id="name">
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-3">
+                        <label class="form-label" for="brand">Brand</label>
+                        <input class="form-control" type="text" name="brand" value="<%- product.brand %> " id="brand">
+                    </div>
+                    <div class="mb-3 col-3">
+                        <label class="form-label" for="price">Price</label>
+                        <input class="form-control" type="number" name="price" value="<%- product.price%> " id="price">
+                    </div>
+                    <div class="mb-3 col-3">
+                        <label class="form-label" for="quantity">Quantity</label>
+                        <input class="form-control" type="number" name="quantity" value="<%- product.quantity %> " id="quantity">
+                    </div>
+                    <div class="mb-3 col-3">
+                        <label class="form-label" for="category">Category</label>
+                        <select class="form-select" aria-label="Default select example" name="id" id="category">
+                            <% for( let category of categories ) { %>
+                                <option value="<%= category._id %>"><%= category.name%> </option>
+                            <% } %>
+                          </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="description">Product Description</label>
+                    <textarea name="description" id="description" cols="62" rows="10"><%= product.description %> </textarea>
+                </div>
+
+                <button class="btn btn-primary" type="submit">Add Product</button>
+        </form>
+    </div>
+</div>

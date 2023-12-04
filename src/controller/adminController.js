@@ -104,8 +104,15 @@ module.exports = {
             const userId = req.params.id
             const user = await userSchema.findById( userId )
 
-            user.isBlocked = true;
-            await user.updateOne({ $set: { isBlocked: true } });
+            const {username, firstName, lastName, phone, email } = req.body
+
+            await user.updateOne({ $set: {
+                username,
+                firstName,
+                lastName,
+                phone,
+                email
+            } });
             res.redirect('/admin/users');
         } catch (error) {
             console.log(error);
@@ -113,12 +120,7 @@ module.exports = {
     },
     deleteUser: async (req, res) => {
         try {
-
-            const userId = req.params.id
-            const user = await userSchema.findById( userId )
-
-            user.isBlocked = true;
-            await user.updateOne({ $set: { isBlocked: true } });
+            await User.deleteOne({_id: req.params.id})
             res.redirect('/admin/users');
         } catch (error) {
             console.log(error);
@@ -130,7 +132,6 @@ module.exports = {
             const userId = req.params.id
             const user = await userSchema.findById( userId )
 
-            user.isBlocked = true;
             await user.updateOne({ $set: { isBlocked: true } });
             res.redirect('/admin/users');
         } catch (error) {
