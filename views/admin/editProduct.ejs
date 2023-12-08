@@ -24,11 +24,15 @@
 
 
                 <div class="mb-3">
-                    <label class="form-label" for="image">Product Image</label>
-                    <% product.image.forEach((img,index) => { %>
-                        <img src="/uploads/product-images/<%- img[index+1] %>" alt="" class="img-fluid">
-                    <% }) %>
-                    <input class="form-control" type="file" name="images" id="image" multiple>
+                    <div class="container card">
+                        <div class="card-body">
+                            <% product.image.forEach((img,index) => { %>
+                                <img src="/uploads/product-images/<%- img[index+1] %>" alt="" class="img-fluid">
+                            <% }) %>
+                        </div>
+                        <label class="form-label" for="image">Product Image</label>
+                        <input class="form-control" type="file" name="images" id="image" multiple onchange="viewImage(event)">
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="name">Product Name</label>
@@ -65,3 +69,10 @@
         </form>
     </div>
 </div>
+
+
+<script>
+    function viewImage(event) {
+        document.getElementById('image').src=URL.createObjectURL(event.target.files[0])
+    }
+</script>

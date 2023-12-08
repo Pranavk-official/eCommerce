@@ -26,9 +26,27 @@
                                 </a>
                               
                                 <ul class="dropdown-menu">
-                                  <li><a class="dropdown-item" href="/user/profile">My Account</a></li>
-                                  <li><a class="dropdown-item" href="/cart">Cart</a></li>
-                                  <li><a class="dropdown-item" href="/user/orders">Orders</a></li>
+                                  <li>
+                                    <a class="dropdown-item text-success" href="/user/profile">
+                                        <i class="bi bi-person"></i>
+                                        My Account
+                                    </a>
+                                </li>
+                                  <li>
+                                    <a class="dropdown-item text-info" href="/cart">
+                                        <i class="bi bi-cart"></i>
+                                        Cart 
+                                        <span class="badge bg-info text-white">
+                                            <%= cartCount %> 
+                                        </span>
+                                    </a>
+                                </li>
+                                  <li>
+                                    <a class="dropdown-item text-warning" href="/user/orders">
+                                        <i class="bi bi-boxes"></i>
+                                        Orders
+                                    </a>
+                                </li>
                                   <li><hr class="dropdown-divider"></li>
                                   <li>
                                     <form class="dropdown-item" action="/logout" method="POST">

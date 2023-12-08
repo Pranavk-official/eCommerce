@@ -2,146 +2,168 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 mb-0"><a href="index.html">Home</a> <span class="mx-2 mb-0">/</span> <strong
-                    class="text-black">Contact</strong></div>
+                    class="text-black">Cart</strong></div>
         </div>
     </div>
 </div>
+
 
 <div class="site-section">
     <div class="container">
-        <div class="row mb-5">
-            <form class="col-md-12" method="post">
-                <div class="site-blocks-table">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th class="product-thumbnail">Image</th>
-                                <th class="product-name">Product</th>
-                                <th class="product-price">Price</th>
-                                <th class="product-quantity">Quantity</th>
-                                <th class="product-total">Total</th>
-                                <th class="product-remove">Remove</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="product-thumbnail">
-                                    <img src="/images/cloth_1.jpg" alt="Image" class="img-fluid">
-                                </td>
-                                <td class="product-name">
-                                    <h2 class="h5 text-black">Top Up T-Shirt</h2>
-                                </td>
-                                <td>$49.00</td>
-                                <td>
-                                    <div class="input-group mb-3" style="max-width: 120px;">
-                                        <div class="input-group-prepend">
-                                            <button class="btn btn-outline-primary js-btn-minus"
-                                                type="button">&minus;</button>
-                                        </div>
-                                        <input type="text" class="form-control text-center" value="1" placeholder=""
-                                            aria-label="Example text with button addon"
-                                            aria-describedby="button-addon1">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-primary js-btn-plus"
-                                                type="button">&plus;</button>
-                                        </div>
-                                    </div>
-
-                                </td>
-                                <td>$49.00</td>
-                                <td><a href="#" class="btn btn-primary btn-sm">X</a></td>
-                            </tr>
-
-                            <tr>
-                                <td class="product-thumbnail">
-                                    <img src="/images/cloth_2.jpg" alt="Image" class="img-fluid">
-                                </td>
-                                <td class="product-name">
-                                    <h2 class="h5 text-black">Polo Shirt</h2>
-                                </td>
-                                <td>$49.00</td>
-                                <td>
-                                    <div class="input-group mb-3" style="max-width: 120px;">
-                                        <div class="input-group-prepend">
-                                            <button class="btn btn-outline-primary js-btn-minus"
-                                                type="button">&minus;</button>
-                                        </div>
-                                        <input type="text" class="form-control text-center" value="1" placeholder=""
-                                            aria-label="Example text with button addon"
-                                            aria-describedby="button-addon1">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-primary js-btn-plus"
-                                                type="button">&plus;</button>
-                                        </div>
-                                    </div>
-
-                                </td>
-                                <td>$49.00</td>
-                                <td><a href="#" class="btn btn-primary btn-sm">X</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </form>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="row mb-5">
-                    <div class="col-md-6 mb-3 mb-md-0">
-                        <button class="btn btn-primary btn-sm btn-block">Update Cart</button>
+        <% if (cartItems && cartItems.items.length > 0) { %>
+         
+            <div class="row mb-5">
+                <form class="col-md-12" action="" method="post">
+                    <div class="site-blocks-table">
+                        <table class="table table-sm table-bordered ">
+                            <thead>
+                                <tr>
+                                    <th class="product-thumbnail">Image</th>
+                                    <th class="product-name">Product</th>
+                                    <th class="product-price">Price</th>
+                                    <th class="product-quantity">Quantity</th>
+                                    <th class="product-total">Total</th>
+                                    <th class="product-remove">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for( let item of cartItems.items ) { %>
+                                    <tr>
+    
+                                        <td class="product-thumbnail">
+                                            <img src="/uploads/product-images/<%- item.productId.image[0]  %> " alt="Image" class="img-fluid">
+                                        </td>
+                                        <td class="product-name">
+                                            <h2 class="h5 text-black"><%= item.productId.name %> </h2>
+                                        </td>
+                                        <td>$<%= item.productId.price %> </td>
+                                        <td>
+                                            <div class="input-group mb-3" style="max-width: 120px;">
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-outline-primary js-btn-minus"
+                                                        type="button">&minus;</button>
+                                                </div>
+                                                <input type="text" class="form-control text-center" value="<%- item.quantity %> " placeholder=""
+                                                    aria-label="Example text with button addon"
+                                                    aria-describedby="button-addon1">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-primary js-btn-plus"
+                                                        type="button" onclick="incCartItem('<%- productId._id %> ')">&plus;</button>
+                                                </div>
+                                            </div>
+        
+                                        </td>
+                                        <td>$<%= item.quantity * item.productId.price %> </td>
+                                        <td><a href="#" class="btn btn-primary btn-sm">X</a></td>
+                                    </tr>
+                                <% } %>
+    
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="col-md-6">
-                        <button class="btn btn-outline-primary btn-sm btn-block">Continue Shopping</button>
+                    <div class="d-flex justify-content-evenly">
+                        <button class="btn btn-primary btn-sm col-md-3 col-lg-2 mx-1">Update Cart</button>
+                        <button class="btn btn-outline-primary btn-sm col-md-3 col-lg-2">Continue Shopping</button>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <label class="text-black h4" for="coupon">Coupon</label>
-                        <p>Enter your coupon code if you have one.</p>
-                    </div>
-                    <div class="col-md-8 mb-3 mb-md-0">
-                        <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
-                    </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-primary btn-sm">Apply Coupon</button>
-                    </div>
-                </div>
+                </form>
             </div>
-            <div class="col-md-6 pl-5">
-                <div class="row justify-content-end">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-12 text-right border-bottom mb-5">
-                                <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <span class="text-black">Subtotal</span>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <strong class="text-black">$230.00</strong>
-                            </div>
-                        </div>
-                        <div class="row mb-5">
-                            <div class="col-md-6">
-                                <span class="text-black">Total</span>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <strong class="text-black">$230.00</strong>
-                            </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button class="btn btn-primary btn-sm py-3 btn-block"
-                                    onclick="window.location='checkout.html'">Proceed To Checkout</button>
+            <div class="row">
+                <div class="col-md-6">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="text-black h4" for="coupon">Coupon</label>
+                            <p>Enter your coupon code if you have one.</p>
+                        </div>
+                        <div class="col-md-8 mb-3 mb-md-0">
+                            <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary btn-sm">Apply Coupon</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 pl-5">
+                    <div class="row justify-content-end">
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-12 text-right border-bottom mb-5">
+                                    <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <span class="text-black">Subtotal</span>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <strong class="text-black">$230.00</strong>
+                                </div>
+                            </div>
+                            <div class="row mb-5">
+                                <div class="col-md-6">
+                                    <span class="text-black">Total</span>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <strong class="text-black">$230.00</strong>
+                                </div>
+                            </div>
+    
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button class="btn btn-primary btn-sm py-3"
+                                        onclick="window.location='checkout.html'">Proceed To Checkout</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        
+        <% } else { %>
+            
+            <div class="row md-5">
+                <div class="col md-6 text-center">
+                    <h2 class="h1">
+                        Cart is empty...
+                    </h2>
+                    <h3>
+                        <a href="/shop">
+                            <button class="btn btn-lg btn-primary">Shop Now</button>
+                        </a>
+                    </h3>
+                </div>
+            </div>
+
+        <% } %>
+
+        
     </div>
 </div>
+
+<!-- Axios Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js" integrity="sha512-b94Z6431JyXY14iSXwgzeZurHHRNkLt9d6bAHt7BZT38eqV+GyngIi/tVye4jBKPYQ2lBdRs0glww4fmpuLRwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Javascript for Add to Cart -->
+
+<script>
+    async function incCartItem( productId ){
+        try {
+
+            console.log(productId)
+            const res = await axios.post(`/add-to-cart/${productId}`)
+
+
+        }catch(error) {
+            console.log(error.message)
+        }
+    }
+
+    async function decCartItem( productId ) {
+        try {
+
+        }catch (error) {
+            
+        }
+    }
+</script>

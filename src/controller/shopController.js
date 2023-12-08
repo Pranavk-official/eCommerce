@@ -25,21 +25,35 @@ module.exports = {
         }
     },
     getShop : async (req,res) => {
-        const products = await Product.find({status: true})
-        const categories = await Category.find({status: true})
-
-        res.render('shop/products', {
-            products,
-            categories,
-            user: req.user
-        })
-    },
-    getCart : async (req,res) => {
-
-    },
-
-    // Add to Cart
-
+        try {
+            const products = await Product.find({status: true})
+            const categories = await Category.find({status: true})
     
+            res.render('shop/products', {
+                products,
+                categories,
+                user: req.user
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    getSingleProduct : async (req,res) => {
+        try {
+            const productId = req.params.id
+            const product = await Product.findById(productId)
+
+            const locals = {
+                title: product.name
+            }
+
+            res.render('shop/productDetail',{
+                locals,
+                product
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    },
 
 }

@@ -15,7 +15,7 @@ const multer = require( 'multer' )
 const connetDB = require('./src/config/db')
 const passport = require('./src/config/passport-config')
 
-const { isActiveRoute } = require('./src/helpers/routeHelper')
+const { isActiveRoute, getCartCount } = require('./src/helpers/routeHelper')
 
 const indexRouter = require('./src/routes/index');
 const authRouter = require('./src/routes/authRoute');
@@ -63,6 +63,13 @@ app.use(passport.session())
 
 
 app.locals.isActiveRoute = isActiveRoute
+app.use(async (req, res, next) => {
+  req.cartCount = await getCartCount(req.user);
+  app.locals.cartCount = req.cartCount
+  next();
+});
+
+
 
 app.use(flash());
 

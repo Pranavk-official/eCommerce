@@ -13,6 +13,7 @@ router.get( '/shop', shopController.getShop )
 // router.get( '/products/:id', shopController.getSingleProduct)
 
 router.get( '/cart', isAuthenticated, cartController.getCart )
+router.post( '/add-to-cart/:id', isAuthenticated, cartController.addToCart )
 
 
 // Routes - POST

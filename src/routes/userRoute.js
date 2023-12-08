@@ -25,8 +25,6 @@ router.get('/categories')
 router.get('/orders')
 router.get('/order/product/:id')
 
-router.get('/cart')
-
 
 // User Routes - POST /
 
