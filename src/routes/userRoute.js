@@ -22,6 +22,10 @@ router.get('/address')
 router.get('/products')
 router.get('/categories')
 
+router.get('/address', isAuthenticated, userController.getAddress)
+router.get('/add-address', isAuthenticated, userController.getAddAddress)
+
+
 router.get('/orders')
 router.get('/order/product/:id')
 
@@ -30,7 +34,7 @@ router.get('/order/product/:id')
 
 router.post('/profile/edit/')
 
-router.post('/address/add/')
+router.post('/add-address/', isAuthenticated, userController.addAddress)
 
 // User Routes - PUT / and PATCH /
 router.put('/edit-profile')

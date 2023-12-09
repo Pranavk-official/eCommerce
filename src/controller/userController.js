@@ -1,4 +1,5 @@
 const User = require('../models/userSchema')
+const Address = require('../models/addressSchema')
 // User Profile - View
 // User Profile - Edit
 // User Orders
@@ -64,5 +65,92 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
-    }
+    },
+
+    getAddress : async (req,res) => {
+        try {   
+
+            const user = await User.findById(req.user.id).populate({
+                path: 'address',
+                model: 'Address',
+                match: { status: true }
+            })   
+            
+            console.log(user);
+
+            res.render('users/viewAddress', {
+                user: user,
+                address: user.address
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    getAddAddress : async (req,res) => {
+        try {
+
+            res.render('users/addAddress', {
+                success: req.flash('success'),
+                errmsg: req.flash('err')
+            })
+            
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    addAddress : async (req,res) => {
+        try {
+
+            const {firstName, lastName, mobile, landmark, street, address1, address2, city, state, zipcode, country} = req.body
+
+            const address = new Address({
+                firstName,
+                lastName,
+                mobile,
+                address1,
+                address2,
+                state,
+                landmark,
+                street,
+                city,
+                zipcode,
+                country,
+                userId: req.user.id,
+            })
+
+            const result = await address.save()
+
+            await User.updateOne({_id: req.user.id}, {
+                $push: {
+                    address: result._id
+                }
+            })
+
+            res.redirect('/user/address')
+
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    getEditAddress : async (req,res) => {
+        try {
+            
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    editAddress : async (req,res) => {
+        try {
+            
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    removeAddress : async (req,res) => {
+        try {
+            
+        } catch (error) {
+            console.log(error);
+        }
+    },
 }

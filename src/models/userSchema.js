@@ -53,7 +53,11 @@ const userSchema = Schema({
         generatedTime : {
             type: Date
         }
-    }
+    },
+    address: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Address'
+    }],
 }, {
     timestamps: true
 })

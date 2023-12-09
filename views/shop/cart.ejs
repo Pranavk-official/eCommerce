@@ -36,25 +36,25 @@
                                         <td class="product-name">
                                             <h2 class="h5 text-black"><%= item.productId.name %> </h2>
                                         </td>
-                                        <td>$<%= item.productId.price %> </td>
+                                        <td>$<%= item.productId.price %></td>
                                         <td>
                                             <div class="input-group mb-3" style="max-width: 120px;">
                                                 <div class="input-group-prepend">
                                                     <button class="btn btn-outline-primary js-btn-minus"
-                                                        type="button">&minus;</button>
+                                                        type="button" onclick="decCartItem('<%= item.productId._id %>')">&minus;</button>
                                                 </div>
                                                 <input type="text" class="form-control text-center" value="<%- item.quantity %> " placeholder=""
                                                     aria-label="Example text with button addon"
                                                     aria-describedby="button-addon1">
                                                 <div class="input-group-append">
                                                     <button class="btn btn-outline-primary js-btn-plus"
-                                                        type="button" onclick="incCartItem('<%- productId._id %> ')">&plus;</button>
+                                                        type="button" onclick="incCartItem('<%= item.productId._id %> ')">&plus;</button>
                                                 </div>
                                             </div>
         
                                         </td>
                                         <td>$<%= item.quantity * item.productId.price %> </td>
-                                        <td><a href="#" class="btn btn-primary btn-sm">X</a></td>
+                                        <td><button onclick="deleteCartItem('<%= item.productId._id %> ')" class="btn btn-primary btn-sm">X</button></td>
                                     </tr>
                                 <% } %>
     
@@ -151,19 +151,35 @@
         try {
 
             console.log(productId)
-            const res = await axios.post(`/add-to-cart/${productId}`)
+            const res = await axios.post(`/increase-cart-item/${productId}`)
 
 
         }catch(error) {
             console.log(error.message)
         }
     }
-
+    
     async function decCartItem( productId ) {
         try {
+    
+            console.log(productId)
+            const res = await axios.post(`/decrease-cart-item/${productId}`)
+    
+    
+        }catch(error) {
+            console.log(error.message)
+        }
+    }
 
-        }catch (error) {
-            
+    async function deleteCartItem( productId ) {
+        try {
+    
+            console.log(productId)
+            const res = await axios.post(`/delete-cart-item/${productId}`)
+    
+    
+        }catch(error) {
+            console.log(error.message)
         }
     }
 </script>

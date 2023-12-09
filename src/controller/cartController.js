@@ -3,6 +3,8 @@
 const Cart = require('../models/cartSchema')
 const Product = require('../models/productSchema')
 
+const cartHelper = require('../helpers/cartHelper')
+
 
 module.exports = {
     getCart: async (req, res) => {
@@ -18,14 +20,37 @@ module.exports = {
                 path: 'items.productId',
             })
 
-            console.log(updatedCart.items.length);
+            // Check if the cart exist
+            if (updatedCart) {
+                
+                if (updatedCart.items.length === 0) {
+                    await Cart.deleteOne({ userId: userId })
+                    req.flash({ success: 'Cart Deleted' })
+                }
+
+                // item total price and cart total
+                const totalCartPrice = await cartHelper.totalCartPrice(userId)
+ 
+                console.log(totalCartPrice);                 
+
+                res.render('shop/cart', {
+                    locals,
+                    user: req.user,
+                    cartItems: updatedCart,
+                    cartTotalPrice: totalCartPrice
+
+                })
+            } else {
+                res.render('shop/cart', {
+                    locals,
+                    user: req.user,
+                    cartItems: null
+                })
+            }
 
 
-            res.render('shop/cart', {
-                locals,
-                user: req.user,
-                cartItems: updatedCart
-            })
+
+
         } catch (error) {
             console.log(error);
         }
@@ -82,11 +107,7 @@ module.exports = {
                                 }
                             }
                         })
-
-
-
                     }
-
 
                 } else {
                     const productId = req.params.id
@@ -122,6 +143,80 @@ module.exports = {
 
         } catch (error) {
             console.log(error);
+        }
+    },
+
+    increaseCartItem: async (req, res) => {
+        try {
+            const userId = req.user.id
+            const productId = req.params.id
+
+            const userCart = await Cart.findOne({ userId: userId })
+            const productStock = await Product.findOne({ _id: productId }, {
+                quantity: 1
+            })
+
+            const stock = productStock.quantity
+
+            if (stock > 0) {
+                const exist = userCart.items.find(item => item.productId == productId)
+
+                if (exist) {
+                    const availableStock = stock - exist.quantity
+
+                    if (availableStock > 0) {
+                        await Cart.updateOne({ userId: userId, 'items.productId': productId }, {
+                            $inc: {
+                                'items.$.quantity': 1
+                            }
+                        })
+
+                        req.flash({ success: 'Product Quantity Increased' })
+                        res.redirect('/cart')
+                    } else {
+                        req.flash({ errmsg: "Oops! It seems you've reached the maximum quantity of products available for purchase." })
+                        res.redirect('/cart')
+                    }
+                } else {
+                    req.flash({ errmsg: "Oops! The product is not in your cart." })
+                    res.redirect('/cart')
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    decreaseCartItem: async (req, res) => {
+        try {
+            const userId = req.user.id
+            const productId = req.params.id
+
+            const userCart = await Cart.findOne({ userId: userId })
+            const productStock = await Product.findOne({ _id: productId }, { quantity: 1 })
+
+            const stock = productStock.quantity
+            const exist = userCart.items.find(item => item.productId == productId)
+
+            if (exist) {
+    
+                if (exist.quantity > 0) {
+                    const availableStock = stock - exist.quantity
+    
+                    if (availableStock > 0) {
+                        await Cart.updateOne({ userId: userId, 'items.productId': productId }, {
+                            $inc: { 'items.$.quantity': -1 }
+                        })
+    
+                        req.flash({ success: 'Product Quantity Decreased' })
+                        res.redirect('/cart')
+                    }
+                }
+            }
+            else {
+                res.redirect('/cart')
+            }
+        } catch (error) {
+            console.log(error)
         }
     },
 

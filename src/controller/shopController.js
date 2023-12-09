@@ -5,8 +5,6 @@ const Category = require('../models/categorySchema')
 // Home Page 
 // Products Page 
 // Category Page
-// Cart 
-// Checkout ??
 
 module.exports = {
     getHome: async (req,res) => {

@@ -1,0 +1,38 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <% if (address && address.length > 0) { %>
+         <% address.forEach(item => { %>
+            <div class="col-md-8 m-2">
+                <div class="card container">
+                    <div class="card-body">
+                        <h5 class="card-title text-bold text-black"><%= item.firstName + ' ' + item.lastName %> </h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary"><%= item.mobile %> </h6>
+                        <p class="card-text"><%= item.address1 %> </p>
+                        <p class="card-text"><%= item.address2 %> </p>
+                        <div class="row">
+                            <p class="col"><span class="text-black ">Street</span>: <%= item.street %> </p>
+                            <p class="card-text col"><%= item.landmark %> </p>
+                        </div>
+                        <div class="row">
+                            <p class="card-text col"><%= item.city %> </p>
+                            <p class="card-text col"><%= item.state %> </p>
+                            <p class="card-text col text-black"><%= item.zipcode %> </p>
+                        </div>
+                        <div class="">
+                            <a href="/user/edit-address" class="btn btn-small btn-outline-warning">Edit</a>
+                            <a href="/user/remove-address" class="btn btn-small btn-outline-danger">Remove</a>
+                        </div>
+                      </div>
+                </div>
+            </div>
+         <% }) %>
+        <% } %>
+        <div class="col-md-8 m-2 justify-content-center">
+            <div class="card ">
+                <div class="card-body">
+                    <a href="/user/add-address" class="btn btn-lg btn-primary">Add Address</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
