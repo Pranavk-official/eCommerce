@@ -4,21 +4,15 @@
   </h1>
   <div class="btn-toolbar mb-2 mb-md-0">
     <div class="btn-group mr-2">
-      <a href="/products/add-product">
+      <a href="/admin/products/add-product">
         <button type="button" class="btn btn-sm btn-outline-primary">Add Product</button>
       </a>
-      <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-      <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
     </div>
-    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-      <span data-feather="calendar"></span>
-      This week
-    </button>
   </div>
 </div>
 
 <div class="container">
-  <% if (typeof success !=='undefined' ) { %>
+  <% if ( success.length > 0 ) { %>
     <% if (success) { %>
       <div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>
@@ -26,18 +20,18 @@
         </strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-      <% } %>
-        <% } %>
-          <% if (typeof err !=='undefined' ) { %>
-            <% if (err) { %>
-              <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>
-                  <%= err %>
-                </strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-              <% } %>
-                <% } %>
+    <% } %>
+  <% } %>
+  <% if (err.length > 0 ) { %>
+    <% if (err) { %>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>
+          <%= err %>
+        </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% } %>
+  <% } %>
 </div>
 
 
@@ -93,15 +87,16 @@
             </div>
           </td>
           <td class="text-center">
-            <div class="d-flex flex-row justify-content-center">
-              <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
-              <button class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></button>
-              <form action="/admin/products/delete-product/<%= product._id%>?_method=DELETE" method="POST"
-                class="position relative">
-                <button class="btn btn-danger btn-sm mx-1">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </form>
+            <div class="btn-toolbar btn-group">
+              <button class="btn btn-primary btn-sm">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-warning btn-sm">
+                <i class="bi bi-pencil-square"></i>
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="deleteProduct('<%- product._id %>')">
+                <i class="bi bi-trash"></i>
+              </button>
             </div>
           </td>
         </tr>
@@ -110,3 +105,45 @@
     </tbody>
   </table>
 </div>
+
+
+<!-- Axios -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"
+  integrity="sha512-b94Z6431JyXY14iSXwgzeZurHHRNkLt9d6bAHt7BZT38eqV+GyngIi/tVye4jBKPYQ2lBdRs0glww4fmpuLRwA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- SweetAlert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<!-- JavaScript -->
+
+<script>
+  async function deleteProduct(productId){
+    try {
+      const result = await swal({
+        icon: 'warning',
+        title: 'Are you sure??',
+        text: 'Once deleted, you will not be able to recover this!',
+        buttons: {
+          cancel: true,
+          confirm: "Confirm",
+        }
+      });
+
+      if (result) {
+        const response = await axios.delete(`/admin/products/delete-product/${productId}?_method=DELETE`);
+
+        if (response.status === 200) {
+          swal("Deleted!", 'Product deleted', "success").then(() =>{
+            window.location.reload()
+          });
+        }
+      } else {
+        swal("Cancelled", "Category deletion cancelled.", "error");
+      }
+    } catch (err) {
+      console.log(err);
+      swal("Oh noes!", "The request failed!", "error");
+    }
+  }
+</script>

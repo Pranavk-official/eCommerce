@@ -130,7 +130,7 @@ module.exports = {
         try {
 
             const userId = req.params.id
-            const user = await userSchema.findById( userId )
+            const user = await User.findById( userId )
 
             await user.updateOne({ $set: { isBlocked: true } });
             res.redirect('/admin/users');
@@ -141,14 +141,14 @@ module.exports = {
     unblockUser: async (req, res) => {
         try {
             const userId = req.params.id
-            const user = await userSchema.findById( userId )
+            const user = await User.findById( userId )
 
             user.isBlocked = false;
             await user.updateOne({ $set: { isBlocked: false } });
 
-            if (req.session.user === userId) {
+            if (req.user.id === userId) {
                 // If user is in same browser it deletes 
-                delete req.session.user
+                delete req.user
             }
 
             const sessions = req.sessionStore.sessions;

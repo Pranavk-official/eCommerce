@@ -4,7 +4,8 @@ const router = express.Router()
 const shopController = require('../controller/shopController')
 const cartController = require('../controller/cartController')
 
-const { isAuthenticated, isBlocked, isUserLoggedOut} = require('../middlewares/authMiddleware')
+const { isAuthenticated, isBlocked, isUserLoggedOut} = require('../middlewares/authMiddleware');
+const orderController = require('../controller/orderController');
 
 // Routes - GET
 router.get( '/', shopController.getHome )
@@ -16,13 +17,20 @@ router.get( '/cart', isAuthenticated, cartController.getCart )
 router.post( '/cart', isAuthenticated, (req,res) => {
     res.redirect('/cart')
 } )
-router.post( '/add-to-cart/:id', isAuthenticated, cartController.addToCart )
-router.post( '/delete-cart-item/:id', isAuthenticated, cartController.deleteCartItem )
-router.post( '/decrease-cart-item/:id', isAuthenticated, cartController.decreaseCartItem )
-router.post( '/increase-cart-item/:id', isAuthenticated, cartController.increaseCartItem )
+
+router.get( '/checkout', isAuthenticated, shopController.getCheckout )
 
 
 // Routes - POST
+
+router.post( '/add-to-cart/:id', isAuthenticated, cartController.addToCart )
+router.post( '/delete-cart-item/:id', isAuthenticated, cartController.deleteCartItem )
+router.post( '/change-cart-item/:id', isAuthenticated, cartController.changeQuantity );
+// router.post( '/increase-cart-item/:id', isAuthenticated, cartController.increaseCartItem )
+
+router.post( '/place-order' , isAuthenticated, orderController.placeOrder)
+router.get( '/order-confirm' , isAuthenticated, orderController.getOrderConfirm)
+
 // router.post( '/add-to-cart', cartController.addToCart )
 
 module.exports = router

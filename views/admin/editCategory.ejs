@@ -16,3 +16,102 @@
         </button>
     </div>
 </div>
+
+
+<div class="container py-5">
+
+    <div class="card container" style="max-width: 740px;">
+        <div class="row justify-content-evenly">
+            <form id="myForm" class="card-body col-md-4">
+                <fieldset>
+                    <legend class="card-title">Add Category</legend>
+                    <hr>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="images">Category Image</label>
+
+                        <div class="row">
+                            <div class="col">
+                                <img src="/uploads/category-images/<%- category.image %>" alt="" height="40px" width="100px" class="img-fluid">
+                                <button class="btn btn-outline-danger" onclick="deleteImage('<%- category._id %>', '<%- category.image %>')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                            <div class="col">
+                            </div>
+                        </div>
+
+
+                        <div id="myFirstImage" class="custom-file-container" data-upload-id="myFirstImage"></div>
+                        <input type="file" id="hiddenFileInput" style="display: none;">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="name">Category Name</label>
+                        <input class="form-control" type="text" name="name" id="name" value="<%- category.name %>"
+                            required>
+                    </div>
+
+                    <button id="cancel-upload" class="btn btn-outline-warning" type="reset">Reset</button>
+                    <button class="btn btn-outline-primary" type="submit" onclick="handleSubmit('<%- category._id %>')">Submit</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/file-upload-with-preview/dist/file-upload-with-preview.iife.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+    const upload = new FileUploadWithPreview.FileUploadWithPreview("myFirstImage");
+
+    console.log(upload)
+
+    const deleteImage = async (categoryId, categoryImage) => {
+        try {
+
+            const response = await axios.post(`/admin/category/delete-image/id?id=${categoryId}+image?image=${categoryImage}`, {
+                image: categoryImage
+            })
+
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const handleSubmit = async (categoryId) => {
+
+        // Create a new FormData object
+        const formData = new FormData();
+
+        // Append the form data to the FormData object
+        formData.append("image", upload.cachedFileArray[0]);
+        formData.append("name", document.getElementById("name").value);
+
+        // Send the form data to the server using Axios
+        try {
+            const response = await axios.post(`/admin/category/edit-category/${categoryId}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+
+            if (response.data.redirect) {
+                window.location = response.data.redirect;
+            } else {
+                console.log(response.data);
+            }
+
+            // Handle the response
+            console.log(response.data);
+        } catch (error) {
+            // Handle errors
+            console.error(error);
+        }
+    };
+
+
+
+</script>

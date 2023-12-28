@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const adminLayout = './layouts/adminLayout'
 
 const Product = require('../models/productSchema')
@@ -65,6 +67,7 @@ module.exports = {
                     file.mimetype !== 'image/jpg' &&
                     file.mimetype !== 'image/jpeg' &&
                     file.mimetype !== 'image/png' &&
+                    file.mimetype !== 'image/webp' &&
                     file.mimetype !== 'image/gif'
                     ){
                         req.flash('err','Check the image type')
@@ -73,6 +76,8 @@ module.exports = {
             }
 
             const img = []
+
+            console.log(req.files, req.body);
             
             for( let items of req.files) {
                 img.push(items.filename)
@@ -148,9 +153,22 @@ module.exports = {
 
     deleteProduct : async (req,res) => {
         try {
-            await Product.deleteOne({_id: req.params.id})
-            req.flash('success', 'Product deleted')
-            res.redirect('/admin/products')
+
+            const product = await Product.findById(req.params.id)
+
+            if(product.images) {
+                product.images.forEach(image => {
+                    fs.unlink( path.join( __dirname, '../public/images/product-images/' ) + image , ( err ) => {
+                        if( err ) {
+                            res.redirect('/500')
+        
+                        }
+                    })    
+                });
+            }
+            
+            await product.deleteOne()
+            res.status(200).json('Product was removed successfully!!')
         } catch (error) {
             console.log(error);
         }

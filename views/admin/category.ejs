@@ -3,39 +3,27 @@
     <%= locals.title ? locals.title : 'Dashboard' %>
   </h1>
   <div class="btn-toolbar mb-2 mb-md-0">
-    <div class="btn-group mr-2">
-      <a href="/category/add-category"></a>
+    <a href="/admin/category/add-category">
       <button type="button" class="btn btn-sm btn-outline-primary">Add Category</button>
-      <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-      <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-    </div>
-    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-      <span data-feather="calendar"></span>
-      This week
-    </button>
+    </a>
   </div>
 </div>
 
 
 <div class="container">
-  <% if (typeof success !=='undefined' || typeof err !=='undefined' ) { %>
-    <% if (success) { %>
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>
-          <%= success %>
-        </strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      <% } %>
-        <% if (err) { %>
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>
-              <%= err %>
-            </strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-          <% } %>
-            <% } %>
+  <% if (success.length > 0) { %>
+    <div class="alert alert-success alert-dismissible" role="alert">
+      <%= success %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% } %>
+  <% if (err.length > 0) { %>
+    <div class="alert alert-warning alert-dismissible" role="alert">
+      <%= err %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% } %>
+   
 </div>
 
 <div class="container">
@@ -58,14 +46,14 @@
           <td>
             <%= index+1 %>
           </td>
-          <td>
-            <%= category.name %>
+          <td class="text-capitalize">
+            <%= category.name.toLowerCase() %>
           </td>
           <td>
             <img height="50px" width="50px" src="/uploads/category-images/<%= category.image %>" alt=""
               class="img-fluid">
           </td>
-          <td>
+          <td class="status"  id="status-<%= category._id %>">
             <% if (category.status) { %>
               listed
               <% } else { %>
@@ -75,30 +63,31 @@
           <td class="text-center">
             <div class="d-flex flex-row justify-content-center">
               <% if (category.status) { %>
-                <form action="/admin/category/unlist-category/<%= category._id%>?_method=PATCH" method="POST">
-                  <button class="btn btn-danger btn-sm">
-                    <i class="bi bi-slash-circle-fill"></i> Unlist
-                  </button>
-                </form>
+                <button class="btn btn-danger btn-sm" onclick="changeStatus('<%- category._id %>', 'unlist')">
+                  <i class="bi bi-slash-circle-fill"></i> Unlist
+                </button>
                 <% } else { %>
-                  <form action="/admin/category/list-category/<%= category._id%>?_method=PATCH" method="POST">
-                    <button class="btn btn-success btn-sm">
-                      <i class="bi bi-check-circle-fill"></i> List
-                    </button>
-                  </form>
+                  <button class="btn btn-success btn-sm" onclick="changeStatus('<%- category._id %>', 'list')">
+                    <i class="bi bi-check-circle-fill"></i> List
+                  </button>
                   <% } %>
             </div>
           </td>
           <td class="text-center">
             <div class="d-flex flex-row justify-content-center">
-              <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
-              <button class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></button>
-              <form action="/admin/category/delete-category/<%= category._id%>?_method=DELETE" method="POST"
-                class="position relative">
-                <button class="btn btn-danger btn-sm mx-1">
-                  <i class="bi bi-trash"></i>
+              <a href="/admin/view-category/<%= category._id%>">
+                <button class="btn btn-primary btn-sm mx-1">
+                  <i class="bi bi-eye"></i>
                 </button>
-              </form>
+              </a>
+              <a href="/admin/edit-category/<%= category._id%>">
+                <button class="btn btn-warning btn-sm mx-1">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+              </a>
+              <button onclick="deleteCategory('<%- category._id %>')" class="btn btn-danger btn-sm mx-1">
+                <i class="bi bi-trash"></i>
+              </button>
             </div>
           </td>
         </tr>
@@ -107,3 +96,68 @@
     </tbody>
   </table>
 </div>
+
+
+<!-- Axios -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"
+  integrity="sha512-b94Z6431JyXY14iSXwgzeZurHHRNkLt9d6bAHt7BZT38eqV+GyngIi/tVye4jBKPYQ2lBdRs0glww4fmpuLRwA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- SweetAlert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<!-- JavaScript -->
+
+<script>
+  async function deleteCategory(categoryId) {
+    try {
+      const result = await swal({
+        icon: 'warning',
+        title: 'Are you sure??',
+        text: 'Once deleted, you will not be able to recover this!',
+        buttons: {
+          cancel: true,
+          confirm: "Confirm",
+        }
+      });
+
+      if (result) {
+        const response = await axios.delete(`/admin/category/delete-category/${categoryId}?_method=DELETE`);
+
+        if (response.status === 200) {
+          swal("Deleted!", "Category has been deleted.", "success").then(() =>{
+            window.location.reload()
+          });
+        }
+      } else {
+        swal("Cancelled", "Category deletion cancelled.", "error");
+      }
+    } catch (err) {
+      console.log(err);
+      swal("Oh noes!", "The request failed!", "error");
+    }
+  }
+
+  // list/unlist
+  async function changeStatus(categoryId, status) {
+    try {
+      const result = await axios.patch(`/admin/category/change-category-status/${categoryId}?_method=PATCH`, {
+        status
+      })
+
+      console.log(result)
+
+      if (result.status === 200) {
+        swal("Success!", result.data, "success").then(() => {
+          // Refresh the page
+          window.location.reload();
+        })
+      }
+
+    } catch (err) {
+      console.log(err)
+      swal("Oh noes!", "The request failed!", "error");
+    }
+  }
+
+</script>

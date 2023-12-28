@@ -15,7 +15,8 @@ const productSchema = Schema({
     },
 
     brand : {
-        type : String, 
+        type : String,
+        enum: ['Nike', 'Puma', 'Addidas'],
         required : true
     },
 

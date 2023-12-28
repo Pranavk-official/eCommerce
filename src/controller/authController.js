@@ -25,6 +25,7 @@ module.exports = {
         }
 
         try {
+
             res.render('auth/adminLogin', {
                 locals,
                 layout: adminAuthLayout,
@@ -128,21 +129,9 @@ module.exports = {
         req.logout(err => {
             if (err) {
                 console.log(err);
-            } else {
+            }else{
                 req.flash('info', 'Admin Logged Out!!')
-
-                req.session.destroy(err => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        res.clearCookie('connect.sid'); // replace 'connect.sid' with your session cookie name
-                        // res.render('auth/adminLogin', {
-                        //     message: 'Admin Logged Out Successfully',
-                        //     layout: adminAuthLayout
-                        // });
-                        res.redirect('/admin/login')
-                    }
-                });
+                res.redirect('/admin/login')
             }
         });
 
@@ -164,7 +153,8 @@ module.exports = {
         try {
             res.render('auth/userLogin', {
                 locals,
-                layout: authLayout
+                layout: authLayout,
+                message: req.flash('info')
             })
         } catch (error) {
             console.log(error);
@@ -330,17 +320,19 @@ module.exports = {
             if (err) {
                 console.log(err);
             } else {
-                req.session.destroy(err => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        res.clearCookie('connect.sid'); // replace 'connect.sid' with your session cookie name
-                        res.render('auth/userLogin', {
-                            message: 'User Logged Out Successfully',
-                            layout: authLayout
-                        });
-                    }
-                });
+                // req.session.destroy(err => {
+                //     if (err) {
+                //         console.log(err);
+                //     } else {
+                //         res.clearCookie('connect.sid'); // replace 'connect.sid' with your session cookie name
+                //         res.render('auth/userLogin', {
+                //             message: 'User Logged Out Successfully',
+                //             layout: authLayout
+                //         });
+                //     }
+                // });
+                req.flash('info', 'User Logged Out Successfully!!!')
+                res.redirect('/login')
             }
         });
     },

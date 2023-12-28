@@ -5,6 +5,8 @@ const storage = multer.diskStorage({
         cb( null, './public/uploads/images/')
     },
     filename : ( req, file, cb ) => {
+
+
         const uniqueName = Date.now() + '-' + file.originalname
         cb( null, uniqueName )
     }
@@ -15,7 +17,9 @@ const categoryStorage = multer.diskStorage({
         cb( null, './public/uploads/category-images/')
     },
     filename : ( req, file, cb ) => {
-        const uniqueName = Date.now() + '-' + file.originalname
+
+        const filename = file.originalname.split(':')[0]
+        const uniqueName = Date.now() + '-' + filename
         cb( null, uniqueName )
     }
 })
@@ -25,7 +29,8 @@ const profileStorage = multer.diskStorage({
         cb( null, './public/uploads/profile-images/')
     },
     filename : ( req, file, cb ) => {
-        const uniqueName = Date.now() + '-' + file.originalname
+        const filename = file.originalname.split(':')[0]
+        const uniqueName = Date.now() + '-' + filename
         cb( null, uniqueName )
     }
 })

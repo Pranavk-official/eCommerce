@@ -19,46 +19,129 @@
 
 <div class="container">
     <div class="container card pt-5" style="max-width: 600px;">
-        <form action="/admin/products/add-product" method="POST" class="card-body"  enctype="multipart/form-data">
-                <legend>Add Product</legend>
+        <form id="addProductForm" class="card-body" method="POST" enctype="multipart/form-data">
+            <legend>Add Product</legend>
 
 
-                <div class="mb-3">
-                    <label class="form-label" for="image">Product Image</label>
-                    <input class="form-control" type="file" name="images" id="image" multiple>
+            <div class="mb-3">
+                <label class="form-label" for="image">Product Images</label>
+                <div id="myFirstImage" class="custom-file-container" data-upload-id="myFirstImage"></div>
+                <!-- <input class="form-control" type="file" name="images" id="image" multiple> -->
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="name">Product Name</label>
+                <input class="form-control" type="text" name="name" id="name">
+            </div>
+            <div class="row">
+                <div class="mb-3 col-3">
+                    <label class="form-label" for="brand">Brand</label>
+                    <input class="form-control" type="text" name="brand" id="brand">
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="name">Product Name</label>
-                    <input class="form-control" type="text" name="name" id="name">
+                <div class="mb-3 col-3">
+                    <label class="form-label" for="price">Price</label>
+                    <input class="form-control" type="number" name="price" id="price">
                 </div>
-                <div class="row">
-                    <div class="mb-3 col-3">
-                        <label class="form-label" for="brand">Brand</label>
-                        <input class="form-control" type="text" name="brand" id="brand">
-                    </div>
-                    <div class="mb-3 col-3">
-                        <label class="form-label" for="price">Price</label>
-                        <input class="form-control" type="number" name="price" id="price">
-                    </div>
-                    <div class="mb-3 col-3">
-                        <label class="form-label" for="quantity">Quantity</label>
-                        <input class="form-control" type="number" name="quantity" id="quantity">
-                    </div>
-                    <div class="mb-3 col-3">
-                        <label class="form-label" for="category">Category</label>
-                        <select class="form-select" aria-label="Default select example" name="id" id="category">
-                            <% for( let category of categories ) { %>
-                                <option value="<%= category._id %>"><%= category.name%> </option>
+                <div class="mb-3 col-3">
+                    <label class="form-label" for="quantity">Quantity</label>
+                    <input class="form-control" type="number" name="quantity" id="quantity">
+                </div>
+                <div class="mb-3 col-3">
+                    <label class="form-label" for="category">Category</label>
+                    <select class="form-select" aria-label="Default select example" name="id" id="category">
+                        <% for( let category of categories ) { %>
+                            <option value="<%= category._id %>">
+                                <%= category.name%>
+                            </option>
                             <% } %>
-                          </select>
-                    </div>
+                    </select>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="description">Product Description</label>
-                    <textarea name="description" id="description" cols="62" rows="10"></textarea>
-                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="description">Product Description</label>
+                <textarea class="form-control" name="description" id="description"></textarea>
+            </div>
 
-                <button class="btn btn-primary" type="submit">Add Product</button>
+            <button class="btn btn-primary" type="submit">Add Product</button>
         </form>
     </div>
 </div>
+
+<script src="https://unpkg.com/file-upload-with-preview/dist/file-upload-with-preview.iife.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+    const upload = new FileUploadWithPreview.FileUploadWithPreview("myFirstImage", { multiple: true, maxFileCount: 6 });
+
+    console.log(upload)
+
+    // console.log(upload.cachedFileArray)
+    
+    upload.cachedFileArray.forEach((item,index) => {
+        console.log(index, item)
+    })
+    
+    const files = upload.cachedFileArray
+    
+    const handleSubmit = async (event) => {
+        // Prevent the form from being submitted normally
+        event.preventDefault();
+        
+        console.log(upload.cachedFileArray)
+        // Create a new FormData object
+        const formData = new FormData();
+
+
+        const files = upload.cachedFileArray;
+
+        console.log(files)
+
+        for (let i = 0; i < files.length; i++) {
+            formData.set(`images[${i}]`, files[i]);
+        }
+
+
+
+        formData.set("name", document.getElementById("name").value);
+        formData.set("brand", document.getElementById("brand").value);
+        formData.set("price", document.getElementById("price").value);
+        formData.set("quantity", document.getElementById("quantity").value);
+        formData.set("id", document.getElementById("category").value);
+        formData.set("description", document.getElementById("description").value);
+
+
+        console.log(formData)
+
+        // Send the form data to the server using Axios
+
+        try {
+            const response = await axios.post("/admin/products/add-product", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+
+            if (response.data.redirect) {
+                window.location = response.data.redirect;
+            } else {
+                console.log(response.data);
+            }
+
+            // Handle the response
+            console.log(response.data);
+        } catch (error) {
+            // Handle errors
+            console.error(error);
+        }
+    };
+
+    /*
+    window.addEventListener('fileUploadWithPreview:imagesAdded', function (e) {
+        console.log(e.detail.cachedFileArray);
+    });
+    */
+    // Attach the handleSubmit function to the form's submit event
+    document.querySelector("#addProductForm").addEventListener("submit", handleSubmit);
+
+
+
+</script>

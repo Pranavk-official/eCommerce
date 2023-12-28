@@ -1,0 +1,51 @@
+<section class="site-section">
+    <div class="container">
+
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <h3 class="h1 text-center mb-5">
+                    Order Confirmed
+                </h3>
+                <div class="col-12 row">
+                    <div style="margin-bottom: 20px; text-decoration: none;" class="col-12">
+                        <h5><u><b>Order Details</b></u></h5>
+                        <p><b class="text-black">Order Date</b> : <%= order[0].date %> </p>
+                        <p><b class="text-black">Order id</b> : <%= order[0]._id %> </p>
+                        <p><b class="text-black">Amount </b>: <%= order[0].totalPrice %> </p>
+                        <p><b class="text-black">Payment Method</b> : <%= order[0].paymentMethod %></p>
+                    </div>
+                    <div class="col-12 address">
+                        <h5><u><b>Address</b></u></h5>
+                        <p> <%= order[0].address.firstName + ' ' + order[0].address.lastName %> </p>
+                        <p> <%= order[0].address.address1 %> </p>
+                        <p> <%= order[0].address.address2 %> </p>
+                        <p> <%= order[0].address.street + ' ' + order[0].address.landmark + ' ' + order[0].address.city + ' ' + order[0].address.state%>  </p>
+                        <p>Pin: <%= order[0].address.zipcode %> </p>
+
+                    </div>
+                </div>
+
+                <table class="table table-striped">
+                    <thead>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Brand</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>total</th>
+                    </thead>
+
+                    <tbody>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<pre><%= order %></pre>

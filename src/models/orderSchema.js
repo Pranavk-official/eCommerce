@@ -6,14 +6,14 @@ const orderSchema = Schema({
 
     userId : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'user',
+        ref : 'User',
         required : true
     },
 
     products : [{
         productId : {
             type : Schema.Types.ObjectId,
-            ref : 'product',
+            ref : 'Product',
             required : true
         },
         quantity : {
@@ -44,7 +44,7 @@ const orderSchema = Schema({
 
     address : {
         type : Schema.Types.ObjectId,
-        ref : 'address',
+        ref : 'Address',
         required : true
     },
 
@@ -53,7 +53,8 @@ const orderSchema = Schema({
         default : Date.now
     },
 
-
+}, {
+    timestamps: true
 })
 
 module.exports = mongoose.model('Order',orderSchema)

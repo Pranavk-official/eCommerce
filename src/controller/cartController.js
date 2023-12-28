@@ -29,15 +29,16 @@ module.exports = {
                 }
 
                 // item total price and cart total
-                const totalCartPrice = await cartHelper.totalCartPrice(userId)
- 
-                console.log(totalCartPrice);                 
+                
+                const cartTotal = await cartHelper.totalCartPrice(req.user.id)        
+
+                console.log(cartTotal);
 
                 res.render('shop/cart', {
                     locals,
                     user: req.user,
                     cartItems: updatedCart,
-                    cartTotalPrice: totalCartPrice
+                    cartTotalPrice: cartTotal[0]
 
                 })
             } else {
@@ -146,77 +147,45 @@ module.exports = {
         }
     },
 
-    increaseCartItem: async (req, res) => {
+    changeQuantity: async (req, res) => {
         try {
-            const userId = req.user.id
-            const productId = req.params.id
-
-            const userCart = await Cart.findOne({ userId: userId })
-            const productStock = await Product.findOne({ _id: productId }, {
-                quantity: 1
-            })
-
-            const stock = productStock.quantity
-
-            if (stock > 0) {
-                const exist = userCart.items.find(item => item.productId == productId)
-
-                if (exist) {
-                    const availableStock = stock - exist.quantity
-
-                    if (availableStock > 0) {
-                        await Cart.updateOne({ userId: userId, 'items.productId': productId }, {
-                            $inc: {
-                                'items.$.quantity': 1
-                            }
-                        })
-
-                        req.flash({ success: 'Product Quantity Increased' })
-                        res.redirect('/cart')
-                    } else {
-                        req.flash({ errmsg: "Oops! It seems you've reached the maximum quantity of products available for purchase." })
-                        res.redirect('/cart')
-                    }
+            const userId = req.user.id;
+            const productId = req.params.id;
+            const changeType = req.body.changeType;
+    
+            const userCart = await Cart.findOne({ userId: userId });
+            const productStock = await Product.findOne({ _id: productId }, { quantity: 1 });
+    
+            const stock = productStock.quantity;
+            const exist = userCart.items.find(item => item.productId == productId);
+    
+            if (exist) {
+                const availableStock = stock - exist.quantity;
+    
+                if (changeType === 'increase' && availableStock > 0) {
+                    await Cart.updateOne({ userId: userId, 'items.productId': productId }, {
+                        $inc: { 'items.$.quantity': 1 }
+                    });
+    
+                    req.flash({ success: 'Product Quantity Increased' });
+                    res.redirect('/cart');
+                } else if (changeType === 'decrease' && exist.quantity > 0) {
+                    await Cart.updateOne({ userId: userId, 'items.productId': productId }, {
+                        $inc: { 'items.$.quantity': -1 }
+                    });
+    
+                    req.flash({ success: 'Product Quantity Decreased' });
+                    res.redirect('/cart');
                 } else {
-                    req.flash({ errmsg: "Oops! The product is not in your cart." })
-                    res.redirect('/cart')
+                    req.flash({ errmsg: "Oops! It seems you've reached the limit." });
+                    res.redirect('/cart');
                 }
+            } else {
+                req.flash({ errmsg: "Oops! The product is not in your cart." });
+                res.redirect('/cart');
             }
         } catch (error) {
             console.log(error);
-        }
-    },
-    decreaseCartItem: async (req, res) => {
-        try {
-            const userId = req.user.id
-            const productId = req.params.id
-
-            const userCart = await Cart.findOne({ userId: userId })
-            const productStock = await Product.findOne({ _id: productId }, { quantity: 1 })
-
-            const stock = productStock.quantity
-            const exist = userCart.items.find(item => item.productId == productId)
-
-            if (exist) {
-    
-                if (exist.quantity > 0) {
-                    const availableStock = stock - exist.quantity
-    
-                    if (availableStock > 0) {
-                        await Cart.updateOne({ userId: userId, 'items.productId': productId }, {
-                            $inc: { 'items.$.quantity': -1 }
-                        })
-    
-                        req.flash({ success: 'Product Quantity Decreased' })
-                        res.redirect('/cart')
-                    }
-                }
-            }
-            else {
-                res.redirect('/cart')
-            }
-        } catch (error) {
-            console.log(error)
         }
     },
 

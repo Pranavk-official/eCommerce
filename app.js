@@ -63,9 +63,15 @@ app.use(passport.session())
 
 
 app.locals.isActiveRoute = isActiveRoute
+
 app.use(async (req, res, next) => {
   req.cartCount = await getCartCount(req.user);
   app.locals.cartCount = req.cartCount
+  next();
+});
+
+app.use(async (req, res, next) => {
+  app.locals.user = req.user
   next();
 });
 

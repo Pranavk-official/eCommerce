@@ -27,7 +27,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% for( let item of cartItems.items ) { %>
+                                <% cartItems.items.forEach((item,index) => { %>
                                     <tr>
     
                                         <td class="product-thumbnail">
@@ -48,15 +48,15 @@
                                                     aria-describedby="button-addon1">
                                                 <div class="input-group-append">
                                                     <button class="btn btn-outline-primary js-btn-plus"
-                                                        type="button" onclick="incCartItem('<%= item.productId._id %> ')">&plus;</button>
+                                                        type="button" onclick="incCartItem('<%= item.productId._id %>')">&plus;</button>
                                                 </div>
                                             </div>
         
                                         </td>
-                                        <td>$<%= item.quantity * item.productId.price %> </td>
+                                        <td id="productTotal">$ <%= cartTotalPrice.items[index].totalPrice %> </td>
                                         <td><button onclick="deleteCartItem('<%= item.productId._id %> ')" class="btn btn-primary btn-sm">X</button></td>
                                     </tr>
-                                <% } %>
+                                <% }) %>
     
                             </tbody>
                         </table>
@@ -97,7 +97,7 @@
                                     <span class="text-black">Subtotal</span>
                                 </div>
                                 <div class="col-md-6 text-right">
-                                    <strong class="text-black">$230.00</strong>
+                                    <strong class="text-black">$ <%= cartTotalPrice.totalPriceOfCart %> </strong>
                                 </div>
                             </div>
                             <div class="row mb-5">
@@ -112,7 +112,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <button class="btn btn-primary btn-sm py-3"
-                                        onclick="window.location='checkout.html'">Proceed To Checkout</button>
+                                        onclick="window.location='/checkout'">Proceed To Checkout</button>
                                 </div>
                             </div>
                         </div>
@@ -147,24 +147,31 @@
 <!-- Javascript for Add to Cart -->
 
 <script>
+
+    let quantityEl = document.querySelector('itemQuantity').innerHTML()
+
     async function incCartItem( productId ){
         try {
 
             console.log(productId)
-            const res = await axios.post(`/increase-cart-item/${productId}`)
+            const res = await axios.post(`/change-cart-item/${productId}`, {
+                changeType: 'increase'
+            })
 
 
         }catch(error) {
             console.log(error.message)
         }
     }
-    
+
     async function decCartItem( productId ) {
         try {
     
-            console.log(productId)
-            const res = await axios.post(`/decrease-cart-item/${productId}`)
-    
+            const res = await axios.post(`/change-cart-item/${productId}`, {
+                changeType: 'decrease'
+            })
+            
+            console.log(quantityEl)
     
         }catch(error) {
             console.log(error.message)
@@ -182,4 +189,6 @@
             console.log(error.message)
         }
     }
+
+
 </script>

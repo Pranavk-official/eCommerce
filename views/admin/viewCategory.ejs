@@ -1,0 +1,35 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <%= locals.title ? locals.title : 'Dashboard' %>
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <a href="/category/add-category">
+                <button type="button" class="btn btn-sm btn-outline-primary">Add Category</button>
+            </a>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <span data-feather="calendar"></span>
+            This week
+        </button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-7">
+            <img src="/uploads/category-images/<%= category.image %>" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-3">
+            <div class="card-body">
+              <h5 class="card-title"><%= category.name %> </h5>
+              <p class="card-text"><%= category.status %> </p>
+              <p class="card-text"><small class="text-body-secondary">Last updated : <%= category.updatedAt %> </small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
